@@ -26,3 +26,4 @@ A simple application that interacts with bluetooth and ble
   <p><a href="https://stackoverflow.com/questions/50527426/ble-how-to-set-uuid-to-16bit">16 bit to 128</a></p>
   <p><a href="https://www.bluetooth.com/specifications/assigned-numbers/service-discovery/">Bluetooth Base uuid</a></p>
   <p><a href="https://www.bluetooth.com/specifications/assigned-numbers/health-device-profile/">heart rate bluetooth characteristic</a></p>
+</p>
