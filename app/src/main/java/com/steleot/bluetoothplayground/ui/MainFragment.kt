@@ -2,11 +2,10 @@ package com.steleot.bluetoothplayground.ui
 
 import android.Manifest
 import android.bluetooth.*
-import android.bluetooth.le.BluetoothLeScanner
-import android.bluetooth.le.ScanCallback
-import android.bluetooth.le.ScanResult
+import android.bluetooth.le.*
 import android.content.Intent
 import android.os.Bundle
+import android.os.ParcelUuid
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -94,6 +93,7 @@ class MainFragment : Fragment() {
             result: ScanResult
         ) {
             val device = result.device
+            Timber.d(result.rssi.toString())
             if (!bleDevices.contains(device)) {
                 bleDevices.add(device)
                 Timber.d(device.toDebugString())
@@ -278,11 +278,17 @@ class MainFragment : Fragment() {
                     Timber.d("Starting to scan for BLE devices")
                     isBleScanning = true
                     bleDevices.clear()
-                    bluetoothLeScanner.startScan(scanCallback)
+                    bluetoothLeScanner.startScan(
+                        listOf(
+//                            ScanFilter.Builder().setServiceUuid(ParcelUuid(UUID_HEART_RATE_MEASUREMENT)).build() // todo stelios
+                        ),
+                        ScanSettings.Builder().build(),
+                        scanCallback
+                    )
                     renameBluetoothScanBleDevices(true)
                 }
                 launch(Dispatchers.IO) {
-                    delay(5_000L)
+                    delay(15_000L)
                     stopScanning(bluetoothLeScanner)
                 }
             }

@@ -2,12 +2,16 @@ package com.steleot.bluetoothplayground.ui
 
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
+import android.content.Context
 import android.content.IntentFilter
+import android.hardware.Sensor
+import android.hardware.SensorManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.steleot.bluetoothplayground.R
 import com.steleot.bluetoothplayground.receiver.BluetoothReceiver
 import com.steleot.bluetoothplayground.receiver.BluetoothReceiverCallbacks
+import timber.log.Timber
 
 private const val FRAGMENT_TAG = "MAIN_FRAGMENT"
 
@@ -19,6 +23,7 @@ class MainActivity : AppCompatActivity(), BluetoothReceiverCallbacks {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        printAllAvailableSensors()
         if (savedInstanceState == null) {
             mainFragment = MainFragment.newInstance()
             supportFragmentManager
@@ -27,6 +32,16 @@ class MainActivity : AppCompatActivity(), BluetoothReceiverCallbacks {
                 .commitNow()
         } else {
             mainFragment = supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) as MainFragment
+        }
+    }
+
+    private fun printAllAvailableSensors() {
+        val sensorManager = getSystemService(Context.SENSOR_SERVICE) as? SensorManager
+        sensorManager?.let {
+            val sensorList = it.getSensorList(Sensor.TYPE_ALL)
+            sensorList.forEach { sensor ->
+                Timber.d(sensor.name)
+            }
         }
     }
 
